@@ -1,4 +1,4 @@
-DROP TABLE Reaction;
-DROP TABLE Playlist;
-DROP TABLE Music;
-DROP TABLE User;
+DROP TABLE reaction;
+DROP TABLE music;
+DROP TABLE playlist;
+DROP TABLE user;

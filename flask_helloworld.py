@@ -2,12 +2,7 @@ from flask_oauthlib.client import OAuth, OAuthException
 from flask import Flask, jsonify, abort, make_response, redirect, url_for, session, request
 import requests as req
 
-OAUTH_OKEN = "BQBZ_rpCDzkahYalrjeO_L1gXjztJyFrMsidAvDb5dl2HjLq4nqqmV-4kLhvAMKvMpL7sex0QmEfO8nnryyXAqDOsK25PTbHuuJLqTbdCFlkp--Rvjd6LH7qGHgeeojkXKRoEyh3c6Ao-DdqChwzlD4FQ2OuERCGbRdV"
 tomazinhal_url = "https://api.spotify.com/v1/users/11122241033"
-
-SPOTIFY_APP_ID = '9efc6cfd070049e18043aee96ae5228a'
-SPOTIFY_APP_SECRET = 'b6eea41f283446c78b0dbee02e3df4b7'
-SPOTIFY_REDIRECT_URI = 'https://localhost:5000/callback'
 
 app = Flask(__name__)
 app.debug = True
