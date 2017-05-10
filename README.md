@@ -10,7 +10,7 @@ After the first meetings the idea faded away and started to solidify with these 
 
 Currently the database holds information of each user, namely their IDs (usernames), access and refresh tokens if they authorized this app to access their personal data.
 
-For each user multiple public playlists will be developed and I chose to hold the information of the playlist in the database as I want to depend as less as possible from Spotify. Each playlist will hold a reference for a music and some information about the playlist itself.
+For each user multiple public playlists will be developed and I chose to hold the information of the playlist in the database as I want to depend as less as possible from Spotify. Each playlist will hold a reference for a music and some information about the playlist itself. An entity to hold the references of the music must be created as there is no type that is an array of music IDs, therefore a Playlist_Musics table will hold all the musics that are refered in playlists.
 
 The database will also save all songs that all users heard and their audio features. This information will be relevant on the creation of playlists based not only on the user's reaction to a music but also what features the music has.
 
@@ -28,5 +28,7 @@ TODO: List packages.
 ## History
 
 02-05-2017: Initial commit. 
+
 04-05-2017: Started working on the README. Created prototype SQL CREATE and DROP tables files.
+
 09-05-2017: Continued working on the README. Increased understanding of the Authorization FLow for the user. Started creating the connector to comunicate with the database. SQL files were updated to hold more information on the user. 
