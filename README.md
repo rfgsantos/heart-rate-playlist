@@ -24,6 +24,10 @@ TODO: Instructions to install venv and virtualenvwrapper.
 
 After installing the virtualenv, these are the packages required for this project:
 TODO: List packages.
+ * spotipy;
+ * flask;
+ * requests (which should be fulfilled when installing spotipy);
+
 
 ## History
 
@@ -32,3 +36,7 @@ TODO: List packages.
 04-05-2017: Started working on the README. Created prototype SQL CREATE and DROP tables files.
 
 09-05-2017: Continued working on the README. Increased understanding of the Authorization FLow for the user. Started creating the connector to comunicate with the database. SQL files were updated to hold more information on the user. 
+
+10-05-2017: Minimal README update.
+
+11-05-2017: Started working on the database connector. Updated database model, CREATE and DROP scripts.
