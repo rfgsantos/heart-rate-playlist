@@ -3,18 +3,17 @@ import json
 import spotipy
 import spotipy.util
 
-from connector import Connector 
+#from connector import Connector 
 from lib import *
-
 
 CREDENTIALS_FILE = "configs/credentials.json"
 creds = get_spotify_credentials(CREDENTIALS_FILE)
 SPOTIFY_APP_ID = creds['SPOTIFY_APP_ID']
 SPOTIFY_APP_SECRET = creds['SPOTIFY_APP_SECRET']
 SPOTIFY_REDIRECT_URI = creds['SPOTIFY_REDIRECT_URI']
-SPOTIFY_SCOPE = creds['SCOPE']
+SPOTIFY_SCOPE = creds['SPOTIFY_SCOPE']
 
-username = "tomaz.spotify"
+username = "jgbbarreiros"
 
 db_creds = get_database_credentials(CREDENTIALS_FILE)
 DB_USERNAME = db_creds['user']

@@ -30,7 +30,7 @@ class Connector():
         self.get_user(username)
         # parse to get id
         id = ""
-        self.insert_user(username, user_id=id, refresh_token, access_token, expires)
+        self.insert_user(username, user_id=id, refresh_token=refresh_token, access_token=access_token, expires=expires)
 
     def insert_playlist(self):
         pass

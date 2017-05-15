@@ -24,4 +24,3 @@ if __name__ == "__main__":
     playlists = sp.current_user_playlists()
     playlist_names = [p['name'] for p in playlists['items']]
     print(playlist_names)
-

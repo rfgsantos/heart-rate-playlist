@@ -1,5 +1,6 @@
 import spotipy
 import connector
+import json
 from datetime import datetime, timedelta
 
 def add_user(username, access_token, refresh_token):
