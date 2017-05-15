@@ -4,36 +4,7 @@ import spotipy
 import spotipy.util
 
 from connector import Connector 
-
-def get_database_credentials(filename):
-    data = None
-    with open(filename, "r") as creds:
-        data = json.load(creds)
-    creds.close()
-    return data['database_credentials']
-
-def get_spotify_credentials(filename):
-    data = None
-    with open(filename, "r") as creds:
-        data = json.load(creds)
-    creds.close()
-    return data['spotify_credentials']
-
-def get_cached_token(username):
-    filename = ".cache-" + username
-    with open(filename, "r+") as user_auth:
-        data = json.load(user_auth)
-    user_auth.close()
-    user_access_token = ""
-    user_access_token_lifespan = ""
-    user_refresh_token = ""
-    try:
-        user_access_token = data['access_token']
-        user_access_token_lifespan = data['expires_in']
-        user_refresh_token = data['refresh_token']
-    except:
-        print("Something went wrong.")
-    return (user_refresh_token, user_access_token, user_access_token_lifespan)
+from lib import *
 
 
 CREDENTIALS_FILE = "configs/credentials.json"
@@ -43,11 +14,13 @@ SPOTIFY_APP_SECRET = creds['SPOTIFY_APP_SECRET']
 SPOTIFY_REDIRECT_URI = creds['SPOTIFY_REDIRECT_URI']
 SPOTIFY_SCOPE = creds['SCOPE']
 
-username = "tomazinhal"
+username = "tomaz.spotify"
 
 db_creds = get_database_credentials(CREDENTIALS_FILE)
 DB_USERNAME = db_creds['user']
 DB_PASSWORD = db_creds['password']
+
+soa = spotipy.oauth2.SpotifyOAuth(client_id=SPOTIFY_APP_ID, client_secret=SPOTIFY_APP_SECRET, redirect_uri=SPOTIFY_REDIRECT_URI, scope=SPOTIFY_SCOPE)
 
 if __name__ == "__main__":
 

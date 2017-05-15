@@ -15,14 +15,22 @@ class Connector():
         self.cursor=self.db.cursor()
         print("Connected to Database.")
 
-    def insert_user(self, user_id, refresh_token, access_token, lifespan):
-        query = "INSERT INTO user (id, refresh_token, access_token, lifespan) VALUES(\""
-        query += "\", \"".join([user_id, refresh_token, access_token]) + "\", " + str(lifespan)
-        query += ") ON DUPLICATE KEY UPDATE access_token=\"" + access_token + "\", refresh_token=\"" + refresh_token + "\", lifespan=" + str(lifespan)
+    def insert_user(self, username, user_id, refresh_token, access_token, expires):
+        query = "INSERT INTO user (username, id, refresh_token, access_token, expires_at) VALUES(\""
+        query += "\", \"".join([username, user_id, refresh_token, access_token]) + "\", " + expires
+        query += ") ON DUPLICATE KEY UPDATE access_token=\"" + access_token + "\", refresh_token=\"" + refresh_token + "\", expires_at=" + expires
         print(query)
 
-    def update_user(self, user_id, refresh_token, access_token, lifespan):
-        self.insert_user(user_id, refresh_token, access_token, lifespan)
+    def get_user(username, id=None):
+        query = "SELECT * FROM users WHERE username=\"" + username + "\""
+        print(query)
+
+
+    def update_user(self, username, refresh_token, access_token, expires):
+        self.get_user(username)
+        # parse to get id
+        id = ""
+        self.insert_user(username, user_id=id, refresh_token, access_token, expires)
 
     def insert_playlist(self):
         pass

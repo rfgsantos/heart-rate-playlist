@@ -4,10 +4,11 @@ CREATE DATABASE IF NOT EXISTS hear_rate_spotify;
 # Create tables
 CREATE TABLE IF NOT EXISTS User
 (
+    username VARCHAR(50) NOT NULL,
     id VARCHAR(50) NOT NULL,
     refresh_token VARCHAR(250) NOT NULL,
     access_token VARCHAR(250) NOT NULL,
-    lifespan INT NOT NULL,
+    expires_at DATE NOT NULL,
     PRIMARY KEY(id)
 );
 
