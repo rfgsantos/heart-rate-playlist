@@ -16,18 +16,44 @@ The database will also save all songs that all users heard and their audio featu
 
 Each user will have a reaction to a music, if they are connected to the IHR reader. By having the IHR read they will send this information to a table named reaction, or context. This table will have the HRV for the music heard by the user and some other information, such as where the user heard the music (GPS) and at what time they heard the music. This is the context that the user was subject to when they heard the music.
 
+![Database sketch](/misc/relational_database.png "Database sketch")
 
 ## Dependencies
 For this project I decided to use Virtual Environments because it is good practice.
 
-TODO: Instructions to install venv and virtualenvwrapper.
+```
+pip install virtualenv
+```
+The wrapper is optional but I like to use it because it makes managing virtualenvs much easier.
+```
+pip install virtualenvwrapper-win
+```
 
-After installing the virtualenv, these are the packages required for this project:
-TODO: List packages.
+After installing the virtualenv, you can use workon `_virtualenv-name_` to start working on this virtual environment.
+
+#### Packages
  * spotipy;
+```
+pip install spotipy
+```
  * flask;
- * requests (which should be fulfilled when installing spotipy);
+```
+pip install flask
+```
+ * requests;
+```
+pip install requests
+```
 
+## Comments
+Setting the redirect URI with HTTPS will cause the server to show an SSL error because of a missing certificate (from my understanding), so using only HTTP will bypass this problem.
+
+Do not forget to log out of your Spofity account before testing with `prompt_for_user_token` or there won't be a prompt for authentication as the logged in user might already have the application authorized.
+
+## References
+[Spotify's Web API Tutorial](https://developer.spotify.com/web-api/tutorial/)
+[Online Database Model](https://repository.genmymodel.com/tomazinhal/heart-rate-playlist)
+[Spotipy Documentation](https://spotipy.readthedocs.io/en/latest/)
 
 ## History
 
@@ -41,4 +67,4 @@ TODO: List packages.
 
 11-05-2017: Started working on the database connector. Updated database model, CREATE and DROP scripts.
 
-15-05-2017: Updated User table to hold the ID of each user and the datetime of expiration of the access_token. Created lib.py to be user as the main library of the application and moved methods from the login.py to this library.
+15-05-2017: Updated User table to hold the ID of each user and the datetime of expiration of the access_token. Created lib.py to be user as the main library of the application and moved methods from the login.py to this library. **Edit**: Asked some questions to professor and work colleagues and finally figured out how the Authentication worked. Now to get the server to correctly manage the requests will be another issue.
