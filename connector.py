@@ -15,9 +15,9 @@ class Connector():
         self.cursor=self.db.cursor()
         print("Connected to Database.")
 
-    def insert_user(self, username, user_id, refresh_token, access_token, expires):
+    def insert_user(self, user_id, username, refresh_token, access_token, expires):
         query = "INSERT INTO user (username, id, refresh_token, access_token, expires_at) VALUES(\""
-        query += "\", \"".join([username, user_id, refresh_token, access_token]) + "\", " + expires
+        query += "\", \"".join([user_id, username, refresh_token, access_token]) + "\", " + expires
         query += ") ON DUPLICATE KEY UPDATE access_token=\"" + access_token + "\", refresh_token=\"" + refresh_token + "\", expires_at=" + expires
         print(query)
 
@@ -25,20 +25,21 @@ class Connector():
         query = "SELECT * FROM users WHERE username=\"" + username + "\""
         print(query)
 
-
     def update_user(self, username, refresh_token, access_token, expires):
         self.get_user(username)
         # parse to get id
         id = ""
-        self.insert_user(username, user_id=id, refresh_token=refresh_token, access_token=access_token, expires=expires)
+        self.insert_user(user_id=id, username=username, refresh_token=refresh_token, access_token=access_token, expires=expires)
 
-    def insert_playlist(self):
-        pass
+    def insert_playlist(self, playlist_id, user_id, comment=None):
+        query = "INSERT INTO playlist (id, user_id, comment) VALUES(\""
+        query += "\", \"".join([playlist_id, user_id, comment]) + "\""
+        print(query)
 
     def update_playlist(self):
         pass
 
-    def insert_music(self):
+    def insert_track(self):
         pass
 
     def insert_reaction(self):
