@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS User
     id VARCHAR(30) NOT NULL UNIQUE,
     access_token VARCHAR(250) NOT NULL,
     refresh_token VARCHAR(250) NOT NULL,
-    expires_at DATE NOT NULL,
+    expires_at DATETIME NOT NULL,
     PRIMARY KEY(id)
 );
 
