@@ -4,10 +4,11 @@ import MySQLdb
 
 class Connector:
     def __init__(self, creds):
-        self.user = db_creds['user']
-        self.password = db_creds['password']
-        self.host = db_creds['host']
-        self.database = db_creds['database']
+        self.user = creds['user']
+        self.password = creds['password']
+        self.host = creds['host']
+        self.database = creds['database']
+        self.connect()
 
     def connect(self):
         self.db=MySQLdb.connect(user=self.user, passwd=self.password, host=self.host, database=self.database)
@@ -24,10 +25,18 @@ class Connector:
     def update_user(self, user_id, access_token, refresh_token, expiration):
         self.insert_user(user_id, access_token, refresh_token, expiration)
 
+    def get_user(self, user_id):
+        query = "SELECT access_token, refresh_token, expires_at FROM user WHERE id=\"{}\""
+        self.cursor.execute(query.format(user_id))
+        result = self.cursor.fetchall()[0]
+        return result[0], result[1], result[2]
+
     def insert_playlist(self, playlist_id, user_id, comment=""):
         query = "INSERT INTO playlist (id, user_id, comment) VALUES(\""
         query += "\", \"".join([playlist_id, user_id, comment]) + "\")"
         print(query)
+        self.cursor.execute(query)
+        self.db.commit()
 
     def update_playlist(self, comment):
         pass

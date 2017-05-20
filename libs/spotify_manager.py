@@ -1,7 +1,7 @@
 import spotipy, spotipy.oauth2
 
 class Manager():
-    def __init__(self, reds):
+    def __init__(self, creds):
         self.app_id = creds['SPOTIFY_APP_ID']
         self.app_secret = creds['SPOTIFY_APP_SECRET']
         self.redirect_uri = creds['SPOTIFY_REDIRECT_URI']
@@ -35,3 +35,10 @@ class Manager():
         except:
             print("Access token expired.")
         return user_id
+
+    def create_playlist(self, user_token, date):
+        sp = spotipy.Spotify(auth=user_token)
+        id = sp.me()['id']# user id is required
+        playlist_name = "HRP-{}".format(date)
+        resp = sp.user_playlist_create(id, playlist_name)
+        return resp['id']
