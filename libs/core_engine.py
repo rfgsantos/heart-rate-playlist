@@ -65,3 +65,8 @@ class Processor:
         #and create recommendations based on this information
         #return list of track ids, which are the recommendations
         pass
+
+    def add_track(self, track_id):
+        duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature = self.manager.track_features(track_id)
+        self.conn.insert_track(track_id, duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
+        #TODO - insert track and check if track is inserted

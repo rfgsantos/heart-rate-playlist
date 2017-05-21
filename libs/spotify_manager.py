@@ -7,10 +7,10 @@ class Manager():
         self.redirect_uri = creds['SPOTIFY_REDIRECT_URI']
         self.scope = creds['SPOTIFY_SCOPE']
     
-    def get_app_token(self):
+    def app_credentials(self):
         scc = spotipy.oauth2.SpotifyClientCredentials(client_id=self.app_id, client_secret=self.app_secret)
         token = scc.get_access_token()
-        return token
+        return scc, token
 
     def parse_code(self, code):
         soa = spotipy.oauth2.SpotifyOAuth(client_id=self.app_id, client_secret=self.app_secret,redirect_uri=self.redirect_uri, scope=self.scope)
@@ -42,3 +42,23 @@ class Manager():
         playlist_name = "HRP-{}".format(date)
         resp = sp.user_playlist_create(id, playlist_name)
         return resp['id']
+
+    def add_tracks(self, tracks, playlist_id, user_token):
+        token = self.get_user_id(user_token)
+        sp = spotipy.Spotify(auth=token)
+        sp.user_playlist_add_tracks(user_id, playlist_id, tracks)
+
+    def track_features(self, track_id):
+        client_credentials, token = self.app_credentials()
+        sp = spotipy.Spotify(client_credentials_manager=client_credentials)
+        features = sp.get_audio_features(track_id)
+        duration = features['duration_ms'] / 1000.
+        danceability = features['danceability']
+        energy = features['energy']
+        loudness = features['loudness']
+        track_key = features['key']
+        liveness = features['liveness']
+        valence = features['valence']
+        tempo = features['tempo']
+        time_signature = features['time_signature']
+        return (duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)

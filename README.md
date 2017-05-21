@@ -63,6 +63,7 @@ Do not forget to log out of your Spofity account before testing with `prompt_for
 
 ## References
 * [Spotify's Web API Tutorial](https://developer.spotify.com/web-api/tutorial/)
+* [Spotify's Android SDK Tutorial](https://developer.spotify.com/technologies/spotify-android-sdk/tutorial/)
 * [Spotipy Documentation](https://spotipy.readthedocs.io/en/latest/)
 * [Online Database Model](https://repository.genmymodel.com/tomazinhal/heart-rate-playlist)
 
@@ -83,3 +84,7 @@ Do not forget to log out of your Spofity account before testing with `prompt_for
 * 16-06-2017: Renamed MUSIC table to TRACK and started began working on relevant track information. Updated Database information with most recent model.
 
 * 18-06-2017: Massive refactor. Created `/libs` and `/testing` to hold the main code to be used as libraries and tests to be made to make sure everything keeps working. 
+
+* 20-06-2017: Create playlist method. Updated testing to create playlist.
+
+* 21-06-2017: Add track method. Incomplete.
