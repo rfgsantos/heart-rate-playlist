@@ -51,8 +51,8 @@ class Manager():
     def track_features(self, track_id):
         client_credentials, token = self.app_credentials()
         sp = spotipy.Spotify(client_credentials_manager=client_credentials)
-        features = sp.get_audio_features(track_id)
-        duration = features['duration_ms'] / 1000.
+        features = sp.audio_features(track_id)[0]
+        duration = int(features['duration_ms']) / 1000.
         danceability = features['danceability']
         energy = features['energy']
         loudness = features['loudness']

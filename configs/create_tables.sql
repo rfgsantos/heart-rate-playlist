@@ -40,11 +40,11 @@ CREATE TABLE IF NOT EXISTS Reaction
     gps DOUBLE    
 );
 
-CREATE TABLE IF NOT EXISTS Recommended
+CREATE TABLE IF NOT EXISTS Recommendation
 (
-    id INT NOT NULL UNIQUE,
-    track_id VARCHAR(30) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
     playlist_id VARCHAR(30) NOT NULL,
+    track_id VARCHAR(30) NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -64,13 +64,15 @@ ALTER TABLE Reaction
     ADD    FOREIGN KEY (user_id)
     REFERENCES User(id)
 ;
+
+ALTER TABLE Recommendation id AUTO_INCREMENT=1;
     
-ALTER TABLE Recommended
-    ADD    FOREIGN KEY (track_id)
-    REFERENCES Track(id)
-;
-    
-ALTER TABLE Recommended
+ALTER TABLE Recommendation
     ADD    FOREIGN KEY (playlist_id)
     REFERENCES Playlist(id)
+;
+
+ALTER TABLE Recommendation
+    ADD    FOREIGN KEY (track_id)
+    REFERENCES Track(id)
 ;

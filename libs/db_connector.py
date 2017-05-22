@@ -42,13 +42,21 @@ class Connector:
         pass
     
     def insert_track(self, track_id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature):
-        query = "INSERT INTO track VALUES(\"{}\", {}, {}, {}, {}, {}, {}, {}, {}, {}, {})"
-        query.format(track_id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
+        query = "INSERT INTO track (id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature) VALUES(\"{0}\", {}, {}, {}, {}, {}, {}, {}, {}, {})"
+        query += " ON DUPLICATE KEY UPDATE id=\"{0}\""
+        query = query.format(track_id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
         print(query)
+        self.cursor.execute(query)
+        self.db.commit()
 
     def insert_reaction(self):
         pass
 
     def insert_recommended(self, playlist_id, track_id):
-        query = "INSERT INTO recommended VALUES(\""
-        query += ""
+        query = "INSERT INTO recommended (playlist_id, track_id) VALUES(\"{}\", \"{}\")
+        query = query.format(playlist_id, track_id)
+        print(query)
+        """
+        self.cursor.execute(query)
+        self.db.commit()
+        """

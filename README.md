@@ -28,6 +28,13 @@ Each user will have a reaction to a music, if they are connected to the IHR read
 
 ![Database sketch](/misc/relational_database_16MAY.png "Database sketch")
 
+## Android Client
+This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device.
+
+The basic diagram showing how each component will communicate is shown below.
+
+![Android Diagram](/misc/AndroidDiagram.png "Android Diagram")
+
 ## Dependencies
 For this project I decided to use Virtual Environments because it is good practice.
 
@@ -88,3 +95,5 @@ Do not forget to log out of your Spofity account before testing with `prompt_for
 * 20-06-2017: Create playlist method. Updated testing to create playlist.
 
 * 21-06-2017: Add track method. Incomplete.
+
+* 22-06-2017: Continued track method. Started working on Android client.
