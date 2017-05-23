@@ -29,11 +29,18 @@ Each user will have a reaction to a music, if they are connected to the IHR read
 ![Database sketch](/misc/relational_database_16MAY.png "Database sketch")
 
 ## Android Client
-This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device.
+_This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device._
 
-The basic diagram showing how each component will communicate is shown below.
+_The basic diagram showing how each component will communicate is shown below._
 
 ![Android Diagram](/misc/AndroidDiagram.png "Android Diagram")
+
+_**THIS WON'T WORK BECAUSE THE DATA CAN'T BE RETRIEVED FROM AN APPLICATION.**_
+
+It must be sent from the native Spotify client. I can't get the information from the Spotify client to know when a track is beginning. Other options so far:
+* **Every minute** or so, query the Web API to know if the user is listening to a track (not scalable as a database with many users would render this method not viable);
+* **Every minute** or so, in the Android application that will communicate with the BLE device, a request for the user's current playing track will be made, and if there is a track being played, then the heart rate should be measured.
+* Another option is to completely drop the Android part of the project and use a BLE dongle to communicate with the heart rate device and get the information the hard way. This means the projects portability would be reduced to zero.
 
 ## Dependencies
 For this project I decided to use Virtual Environments because it is good practice.
@@ -88,12 +95,14 @@ Do not forget to log out of your Spofity account before testing with `prompt_for
 
 * 15-05-2017: Updated User table to hold the ID of each user and the datetime of expiration of the access_token. Created lib.py to be user as the main library of the application and moved methods from the login.py to this library. **Edit**: Asked some questions to professor and work colleagues and finally figured out how the Authentication worked. Now to get the server to correctly manage the requests will be another issue. Also updated README.
 
-* 16-06-2017: Renamed MUSIC table to TRACK and started began working on relevant track information. Updated Database information with most recent model.
+* 16-05-2017: Renamed MUSIC table to TRACK and started began working on relevant track information. Updated Database information with most recent model.
 
-* 18-06-2017: Massive refactor. Created `/libs` and `/testing` to hold the main code to be used as libraries and tests to be made to make sure everything keeps working. 
+* 18-05-2017: Massive refactor. Created `/libs` and `/testing` to hold the main code to be used as libraries and tests to be made to make sure everything keeps working. 
 
-* 20-06-2017: Create playlist method. Updated testing to create playlist.
+* 20-05-2017: Create playlist method. Updated testing to create playlist.
 
-* 21-06-2017: Add track method. Incomplete.
+* 21-05-2017: Add track method. Incomplete.
 
-* 22-06-2017: Continued track method. Started working on Android client.
+* 22-05-2017: Continued track method. Started working on Android client. *** Edit ***: This won't work because you can't get information from an application in Android, it must be willingly sent by the application.
+
+* 23-05-2017: Massive roadblock encountered. Need instructions and help. See #Android Client.
