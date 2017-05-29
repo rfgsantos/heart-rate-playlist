@@ -1,5 +1,8 @@
+import sys
+sys.path.append("libs/")
+import callback_handler
+
 from flask import Flask, request
-import libs.callback_handler
 
 app = Flask(__name__)
 

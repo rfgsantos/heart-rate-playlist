@@ -25,7 +25,7 @@ def is_expired(expires_at):
      
 
 class Processor:
-    def __init__(self, creds_file="../configs/credentials.json"):
+    def __init__(self, creds_file="configs/credentials.json"):
         self.db_creds = get_database_credentials(creds_file)
         self.sp_creds = get_spotify_credentials(creds_file)
         self.conn = db_connector.Connector(self.db_creds)

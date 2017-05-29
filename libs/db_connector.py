@@ -53,7 +53,7 @@ class Connector:
         pass
 
     def insert_recommended(self, playlist_id, track_id):
-        query = "INSERT INTO recommended (playlist_id, track_id) VALUES(\"{}\", \"{}\")
+        query = "INSERT INTO recommended (playlist_id, track_id) VALUES(\"{}\", \"{}\")"
         query = query.format(playlist_id, track_id)
         print(query)
         """

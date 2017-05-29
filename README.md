@@ -29,19 +29,11 @@ Each user will have a reaction to a music, if they are connected to the IHR read
 ![Database sketch](/misc/relational_database_16MAY.png "Database sketch")
 
 ## Android Client
-_This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device._
+This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device.
 
-_The basic diagram showing how each component will communicate is shown below._
+The basic diagram showing how each component will communicate is shown below.
 
 ![Android Diagram](/misc/AndroidDiagram.png "Android Diagram")
-
-_**THIS WON'T WORK BECAUSE THE DATA CAN'T BE RETRIEVED FROM AN APPLICATION.**_
-
-It must be sent from the native Spotify client. I can't get the information from the Spotify client to know when a track is beginning. Other options so far:
-* **Every minute** or so, query the Web API to know if the user is listening to a track (not scalable as a database with many users would render this method not viable);
-* **Every minute** or so, in the Android application that will communicate with the BLE device, a request for the user's current playing track will be made, and if there is a track being played, then the heart rate should be measured.
-* Another option is to completely drop the Android part of the project and use a BLE dongle to communicate with the heart rate device and get the information the hard way. This means the projects portability would be reduced to zero.
-
 ## Dependencies
 For this project I decided to use Virtual Environments because it is good practice.
 
@@ -106,3 +98,5 @@ Do not forget to log out of your Spofity account before testing with `prompt_for
 * 22-05-2017: Continued track method. Started working on Android client. *** Edit ***: This won't work because you can't get information from an application in Android, it must be willingly sent by the application.
 
 * 23-05-2017: Massive roadblock encountered. Need instructions and help. See #Android Client.
+
+* 27-05-2017: Roadblock passed, just a lot of work to be done. Started studying BLE, Retrofit and BroadcastReceivers to get all parts working in the Android. Have until the 31st May to have it done.
