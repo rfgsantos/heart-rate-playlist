@@ -36,7 +36,7 @@ class Processor:
         user_id = self.manager.get_user_id(access_token)
         self.conn.insert_user(user_id, access_token, refresh_token, expiration)        
         
-    def register_reaction(self, information):# handle information
+    def register_reaction(self, reaction):# handle reaction
         pass
     
     def user_token(self, user_id):
