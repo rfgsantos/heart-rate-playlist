@@ -13,12 +13,17 @@ def new_user():
     callback_handler.handle_new_user(auth_code)
     print("User caught!")
 
-@app.route("/new_reaction")
+@app.route("/new_reaction", methods=['POST'])
 def new_reaction():
     print("A user felt something!")
-    #get user's reaction
-    information = "user_id, music_id, heart-rate-stuff, gps, time"
-    callback_handler.handle_new_reaction(information)
+    reaction = {
+        'user_id': request.get('user_id'),
+        'track_id': request.get('track_id'),
+        'location': request.get('location'),
+        'datetime': request.get('datetime'),
+        'heart_rate': request.get('heart_rate')
+    }
+    callback_handler.handle_new_reaction(reaction)
     print("Reaction handled!")
 
 ##########################################################################################

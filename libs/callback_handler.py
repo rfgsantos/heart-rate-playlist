@@ -8,6 +8,6 @@ def handle_new_user(code):
     expires_at = expires_at.strftime("%Y-%m-%d %H:%M:%S")
     processor.register_user(code, expiration_time)
 
-def handle_new_reaction(information):
+def handle_new_reaction(reaction):
     #handle information
-    processor.register_reaction(information)
+    processor.register_reaction(reaction)
