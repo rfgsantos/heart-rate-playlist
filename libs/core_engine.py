@@ -3,6 +3,9 @@ import json
 import spotify_manager
 import db_connector
 
+import sys
+sys.path.append("../")
+
 def get_database_credentials(filename):
     data = None
     with open(filename, "r") as creds:
@@ -60,13 +63,20 @@ class Processor:
         pass
     
     def create_recommendations(self, user_id):
-        #for a user id
-        #search all reactions and analyse them
-        #and create recommendations based on this information
-        #return list of track ids, which are the recommendations
-        pass
+        reactions = self.conn.get_user_reactions(user_id)
+        good = []
+        for reaction in reactions:
+            result = self.eval_reaction(reaction)
+            if self.is_good(result):
+                recommendations.append(good)
+        if len(good) < 5:
+            return #not enough tracks to make a decent playlist
+        recommendations = self.manager.create_recommendations(good)
+        return recommendations
 
     def add_track(self, track_id):
         duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature = self.manager.track_features(track_id)
         self.conn.insert_track(track_id, duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
-        #TODO - insert track and check if track is inserted
+    
+    def eval_reaction(self, reaction):
+        pass

@@ -1,11 +1,12 @@
 import sys
-sys.path.append("../")
+sys.path.append("../libs/")
+#sys.path.append("../configs/")
 import spotipy.util
-import libs.core_engine
+import core_engine
 
 username = "irrelevant"
 
-core_engine.get_spotify_credentials("../configs/credentials.json")
+creds = core_engine.get_spotify_credentials("../configs/credentials.json")
 app_id = creds['SPOTIFY_APP_ID']
 app_secret = creds['SPOTIFY_APP_SECRET']
 redirect_uri = creds['SPOTIFY_REDIRECT_URI']

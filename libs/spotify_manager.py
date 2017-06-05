@@ -14,7 +14,7 @@ class Manager():
 
     def parse_code(self, code):
         soa = spotipy.oauth2.SpotifyOAuth(client_id=self.app_id, client_secret=self.app_secret,redirect_uri=self.redirect_uri, scope=self.scope)
-        response = soa.get_access_token(str(auth_token))
+        response = soa.get_access_token(str(code))
         access_token = response['access_token']
         refresh_token = response['refresh_token']
         return (access_token, refresh_token)
@@ -62,3 +62,10 @@ class Manager():
         tempo = features['tempo']
         time_signature = features['time_signature']
         return (duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
+
+    def create_recommendations(self, tracks):
+        token = self.app_credentials()[1]
+        sp = spotipy.Spotify(auth=token)
+        json = sp.recommendations(seed_tracks=tracks, limit=10)
+        recommendations = list(map(lambda track : track['id'], json['tracks']))
+        return recommendations

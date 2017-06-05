@@ -42,21 +42,36 @@ class Connector:
         pass
     
     def insert_track(self, track_id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature):
-        query = "INSERT INTO track (id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature) VALUES(\"{0}\", {}, {}, {}, {}, {}, {}, {}, {}, {})"
-        query += " ON DUPLICATE KEY UPDATE id=\"{0}\""
+        query = "INSERT INTO track \
+        (id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature) \
+        VALUES(\"{0}\", {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}) \
+        ON DUPLICATE KEY UPDATE id=\"{0}\""
         query = query.format(track_id, duration_sec, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
         print(query)
         self.cursor.execute(query)
         self.db.commit()
 
     def insert_reaction(self):
+        query = "INSERT INTO reaction (user_id, track_id, hrv, date, gps) \
+        VALUES(\"{0}\", \"{1}\", \"{2}\", {3}, {4})"
+        query = query.format("user_id", "track_id", "long text with heart rate", "SOMEDATE", "GPS")
+        print(query)
         pass
 
-    def insert_recommended(self, playlist_id, track_id):
-        query = "INSERT INTO recommended (playlist_id, track_id) VALUES(\"{}\", \"{}\")"
+    def insert_recommendation(self, playlist_id, track_id):
+        query = "INSERT INTO recommendation (playlist_id, track_id) VALUES(\"{}\", \"{}\")"
         query = query.format(playlist_id, track_id)
         print(query)
         """
         self.cursor.execute(query)
         self.db.commit()
+        """
+
+    def get_user_reactions(self, user_id):
+        query = "SELECT * FROM reaction where user_id=\"{}\""
+        query = query.format(user_id)
+        print(query)
+        """
+        self.cursor.execute(query)
+        self.cursor.fetchall()
         """
