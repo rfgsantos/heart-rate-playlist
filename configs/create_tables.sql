@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Reaction
     user_id VARCHAR(30) NOT NULL,
     track_id VARCHAR(30) NOT NULL,
     hrv LONGTEXT NOT NULL,
-    date TIME,
+    date DATETIME,
     gps DOUBLE    
 );
 

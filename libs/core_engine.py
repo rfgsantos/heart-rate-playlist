@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import json
 import spotify_manager
 import db_connector
+import heart_rate_classifier
 
 import sys
 sys.path.append("../")
@@ -40,7 +41,37 @@ class Processor:
         self.conn.insert_user(user_id, access_token, refresh_token, expiration)        
         
     def register_reaction(self, reaction):# handle reaction
-        pass
+        try:
+            print(reaction)
+            print(type(reaction['heart_rate']))
+            print(str(reaction['heart_rate']))
+            print(type(reaction['heart_rate'][0]))
+        except:
+            print("reaction process failed")
+        parsed = parse_reaction(reaction)
+        self.create_reaction(parsed)
+        
+    def parse_reaction(self, reaction):
+        #create text from list of strings containing the RR intervals
+        if reaction['heart_rate']:
+            float_heart_rate = [float(val) for val in reaction['heart_rate']]
+            time_heart_rate = [0]
+            for val in float_heart_rate:
+                time_heart_rate.append(time_heart_rate[len(time_heart_rate) - 1] + val)
+            str_heart_rate = ",".join(["{:.4f}".format(val) for val in time_heart_rate])
+
+        #parse reaction datetime into SQL datetime format
+        date, time = reaction['datetime'].split(" ")
+        day, month, year = date.split('.')
+        new_datetime = "-".join((year, month, day)) + " " + time
+        new_reaction = {
+            'user_id': reaction['user_id'],
+            'track_id': reaction['track_id'],
+            'location': reaction['location'],
+            'datetime': new_datetime,
+            'heart_rate': str_heart_rate
+        }
+        return new_reaction
     
     def user_token(self, user_id):
         access_token, refresh_token, expires_at = self.conn.get_user(user_id)
@@ -68,11 +99,14 @@ class Processor:
         for reaction in reactions:
             result = self.eval_reaction(reaction)
             if self.is_good(result):
-                recommendations.append(good)
+                good.append(result)
         if len(good) < 5:
             return #not enough tracks to make a decent playlist
         recommendations = self.manager.create_recommendations(good)
         return recommendations
+    
+    def is_good(self, track):
+        return True
 
     def add_track(self, track_id):
         duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature = self.manager.track_features(track_id)
@@ -80,3 +114,7 @@ class Processor:
     
     def eval_reaction(self, reaction):
         pass
+
+    def create_reaction(self, reaction):
+        self.add_track(reaction['track_id'])
+        self.conn.insert_reaction(reaction['user_id'], reaction['track_id'], reaction['location'], reaction['datetime'], reaction['heart_rate'])

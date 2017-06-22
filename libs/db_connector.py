@@ -11,9 +11,13 @@ class Connector:
         self.connect()
 
     def connect(self):
-        self.db=MySQLdb.connect(user=self.user, passwd=self.password, host=self.host, database=self.database)
-        self.cursor=self.db.cursor()
-        print("Connected to Database.")
+        try:
+            self.db=MySQLdb.connect(user=self.user, passwd=self.password, host=self.host, database=self.database)
+            self.cursor=self.db.cursor()
+            print("Connected to Database.")
+        except:
+            print("Please turn on Database server.")
+            exit(1)
     
     def insert_user(self, user_id, access_token, refresh_token, expiration):
         query = "INSERT INTO user (id, refresh_token, access_token, expires_at) VALUES(\""
@@ -51,10 +55,10 @@ class Connector:
         self.cursor.execute(query)
         self.db.commit()
 
-    def insert_reaction(self):
+    def insert_reaction(self, user_id, track_id, location, datetime, heart_rate):
         query = "INSERT INTO reaction (user_id, track_id, hrv, date, gps) \
         VALUES(\"{0}\", \"{1}\", \"{2}\", {3}, {4})"
-        query = query.format("user_id", "track_id", "long text with heart rate", "SOMEDATE", "GPS")
+        query = query.format(user_id, track_id, heart_rate, datetime, location)
         print(query)
         pass
 

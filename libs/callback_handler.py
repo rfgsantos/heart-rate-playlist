@@ -9,5 +9,4 @@ def handle_new_user(code):
     processor.register_user(code, expiration_time)
 
 def handle_new_reaction(reaction):
-    #handle information
     processor.register_reaction(reaction)

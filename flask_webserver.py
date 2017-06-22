@@ -7,6 +7,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 PORT=5000
+DEBUG=False
 
 @app.route("/")
 def index():
@@ -24,12 +25,20 @@ def new_user():
 @app.route("/new_reaction", methods=['POST'])
 def new_reaction():
     print("A user felt something!")
+    """
+    print(request.form['user_id'])
+    print(request.form['track_id'].split(":")[2])
+    print(request.form['location'])
+    print(request.form['datetime'])
+    print(len(request.form.getlist('heart_rate')))
+    """
+    
     reaction = {
         'user_id': request.form['user_id'],
-        'track_id': request.form['track_id'],
+        'track_id': request.form['track_id'].split(":")[2],
         'location': request.form['location'],
         'datetime': request.form['datetime'],
-        'heart_rate': request.form['heart_rate']
+        'heart_rate': request.form.getlist('heart_rate')
     }
     callback_handler.handle_new_reaction(reaction)
     print("Reaction handled!")
@@ -37,4 +46,4 @@ def new_reaction():
 
 ##########################################################################################
 if __name__ == "__main__":
-    app.run(debug=True,port=PORT)
+    app.run(host='0.0.0.0', debug=DEBUG, port=PORT)

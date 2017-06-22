@@ -8,11 +8,11 @@ After the first meetings the idea faded away and started to solidify with these 
 
 ## SPOTIFY API
 ### Endpoints
-* https://api.spotify.com/v1/audio-features/{id}
-* https://api.spotify.com/v1/users/{user\_id}/playlists
+
+* https://api.spotify.com/v1/users/{user\_id}
 * https://api.spotify.com/v1/users/{user\_id}/playlists
 * https://api.spotify.com/v1/users/{user\_id}/playlists/{playlist\_id}/tracks
-* https://api.spotify.com/v1/users/{user\_id}
+* https://api.spotify.com/v1/audio-features/{id}
 * https://api.spotify.com/v1/recommendations
 
 
@@ -28,14 +28,24 @@ Each user will have a reaction to a music, if they are connected to the IHR read
 
 ![Database sketch](/misc/relational_database_16MAY.png "Database sketch")
 
+## Server
+# TODO
+
+
 ## Android Client
 This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device.
 
 The basic diagram showing how each component will communicate is shown below.
 
 ![Android Diagram](/misc/AndroidDiagram.png "Android Diagram")
+
+For communicating with the server I will the Retrofit because it is very easy to implement and has a lot of features that I find useful.
+
+## Reaction classification
+# TODO
+
 ## Dependencies
-For this project I decided to use Virtual Environments because it is good practice.
+For this project I used Python 3.6 and decided to use Virtual Environments because it is good practice.
 
 ```
 pip install virtualenv
@@ -100,3 +110,9 @@ Do not forget to log out of your Spofity account before testing with `prompt_for
 * 23-05-2017: Massive roadblock encountered. Need instructions and help. See #Android Client.
 
 * 27-05-2017: Roadblock passed, just a lot of work to be done. Started studying BLE, Retrofit and BroadcastReceivers to get all parts working in the Android. Have until the 31st May to have it done.
+
+* 05-06-2017: Created very basic recommendation system. Can handle reaction. Webserver will accept public requests. 
+
+* 06-06-2017: Added classification module to hold classification types and return results on each user's reactions.
+
+* 22-06-2017: Adding reactions to database.
