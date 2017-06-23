@@ -2,10 +2,9 @@ from datetime import datetime, timedelta
 import json
 import spotify_manager
 import db_connector
-import heart_rate_classifier
-
 import sys
 sys.path.append("../")
+import util.hrv as HRV
 
 def get_database_credentials(filename):
     data = None
@@ -59,6 +58,8 @@ class Processor:
             for val in float_heart_rate:
                 time_heart_rate.append(time_heart_rate[len(time_heart_rate) - 1] + val)
             str_heart_rate = ",".join(["{:.4f}".format(val) for val in time_heart_rate])
+        
+        ts,RR,HR,its,iRR,iHR, f1, pwr1,Vpca1, features_aux = hrv(float_heart_rate,256)
 
         #parse reaction datetime into SQL datetime format
         date, time = reaction['datetime'].split(" ")
@@ -69,7 +70,17 @@ class Processor:
             'track_id': reaction['track_id'],
             'location': reaction['location'],
             'datetime': new_datetime,
-            'heart_rate': str_heart_rate
+            'heart_rate': str_heart_rate,
+            'ts': ts,
+            'RR': RR,
+            'HR': HR,
+            'its': its,
+            'iRR': iRR,
+            'iHR': iHR,
+            'f1': f1,
+            'pwr1': pwr1
+            'Vpca1': Vpca1,
+            'features_aux': features_aux
         }
         return new_reaction
     
