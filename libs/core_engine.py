@@ -4,7 +4,7 @@ import spotify_manager
 import db_connector
 import sys
 sys.path.append("../")
-import util.hrv as HRV
+from util.hrv import *
 
 def get_database_credentials(filename):
     data = None
@@ -47,40 +47,47 @@ class Processor:
             print(type(reaction['heart_rate'][0]))
         except:
             print("reaction process failed")
-        parsed = parse_reaction(reaction)
+        parsed = self.parse_reaction(reaction)
         self.create_reaction(parsed)
         
     def parse_reaction(self, reaction):
         #create text from list of strings containing the RR intervals
         if reaction['heart_rate']:
-            float_heart_rate = [float(val) for val in reaction['heart_rate']]
+            float_heart_rate = []
+            hr = reaction['heart_rate'][0].split(", ")
+            float_heart_rate = [float(val) for val in hr]
+        
+            #float_heart_rate = [float(val) for val in reaction['heart_rate']]
             time_heart_rate = [0]
             for val in float_heart_rate:
                 time_heart_rate.append(time_heart_rate[len(time_heart_rate) - 1] + val)
             str_heart_rate = ",".join(["{:.4f}".format(val) for val in time_heart_rate])
-        
-        ts,RR,HR,its,iRR,iHR, f1, pwr1,Vpca1, features_aux = hrv(float_heart_rate,256)
+        ts = RR = HR = its = iRR = iHR = f1 = pwr1 = Vpca1 = features_aux = []
+        try:
+            ts,RR,HR,its,iRR,iHR, f1, pwr1,Vpca1, features_aux = hrv(time_heart_rate,256)
+        except ValueError:
+            print("Not enough R peaks.")
 
         #parse reaction datetime into SQL datetime format
         date, time = reaction['datetime'].split(" ")
         day, month, year = date.split('.')
         new_datetime = "-".join((year, month, day)) + " " + time
         new_reaction = {
-            'user_id': reaction['user_id'],
-            'track_id': reaction['track_id'],
-            'location': reaction['location'],
-            'datetime': new_datetime,
-            'heart_rate': str_heart_rate,
-            'ts': ts,
-            'RR': RR,
-            'HR': HR,
-            'its': its,
-            'iRR': iRR,
-            'iHR': iHR,
-            'f1': f1,
-            'pwr1': pwr1
-            'Vpca1': Vpca1,
-            'features_aux': features_aux
+            'user_id': reaction['user_id'], #string
+            'track_id': reaction['track_id'], #string
+            'location': reaction['location'], #string
+            'datetime': new_datetime, #string
+            'heart_rate': str_heart_rate, #string
+            'ts': ts, #array
+            'RR': RR, #array
+            'HR': HR, #array
+            'its': its, #array
+            'iRR': iRR, #array
+            'iHR': iHR, #array
+            'f1': f1, #array
+            'pwr1': pwr1, #array
+            'Vpca1': Vpca1, #array
+            'features_aux': features_aux #dict
         }
         return new_reaction
     
