@@ -33,18 +33,20 @@ CREATE TABLE IF NOT EXISTS Track
 
 CREATE TABLE IF NOT EXISTS Reaction
 (
-    user_id VARCHAR(30) NOT NULL,
-    track_id VARCHAR(30) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id VARCHAR(30) NOT NULL REFERENCES user(id),
+    track_id VARCHAR(30) NOT NULL REFERENCES track(id),
     hrv LONGTEXT NOT NULL,
     date DATETIME,
-    gps DOUBLE    
+    gps DOUBLE,
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS Recommendation
 (
     id INT NOT NULL AUTO_INCREMENT,
-    playlist_id VARCHAR(30) NOT NULL,
-    track_id VARCHAR(30) NOT NULL,
+    playlist_id VARCHAR(30) NOT NULL REFERENCES playlist(id),
+    track_id VARCHAR(30) NOT NULL REFERENCES playlist(id),
     PRIMARY KEY(id)
 );
 
@@ -55,17 +57,15 @@ ALTER TABLE Reaction
     REFERENCES Track(id)
 ;
     
-ALTER TABLE Playlist
-    ADD    FOREIGN KEY (user_id)
-    REFERENCES User(id)
-;
-    
 ALTER TABLE Reaction
     ADD    FOREIGN KEY (user_id)
     REFERENCES User(id)
 ;
-
-ALTER TABLE Recommendation id AUTO_INCREMENT=1;
+    
+ALTER TABLE Playlist
+    ADD    FOREIGN KEY (user_id)
+    REFERENCES User(id)
+;
     
 ALTER TABLE Recommendation
     ADD    FOREIGN KEY (playlist_id)

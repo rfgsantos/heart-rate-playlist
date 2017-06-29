@@ -23,3 +23,13 @@ parser.add_argument('--weekly', help='create playlists weekly')
 parser.add_argument('--monthly', help='create playlists monthly')
 args = parser.parse_args()
 print(args.accumulate(args.integers))
+
+def func():
+    processor = core_engine.Processor()
+    users = processor.get_users()
+    for user in users:
+        reactions = user.reactions()
+        seed = reactions.positive() #analyses duration for positive classification
+        recommendations = processor.create_recommendations(seed)
+        processor.create_playlist(user, recommendations)
+    del(processor)

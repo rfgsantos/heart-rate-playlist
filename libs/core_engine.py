@@ -3,6 +3,7 @@ import json
 import spotify_manager
 import db_connector
 import sys
+from user import User
 sys.path.append("../")
 from util.hrv import *
 
@@ -50,6 +51,8 @@ class Processor:
         parsed = self.parse_reaction(reaction)
         self.create_reaction(parsed)
         
+
+    #TODO put in Reaction class!
     def parse_reaction(self, reaction):
         #create text from list of strings containing the RR intervals
         if reaction['heart_rate']:
@@ -64,7 +67,7 @@ class Processor:
             str_heart_rate = ",".join(["{:.4f}".format(val) for val in time_heart_rate])
         ts = RR = HR = its = iRR = iHR = f1 = pwr1 = Vpca1 = features_aux = []
         try:
-            ts,RR,HR,its,iRR,iHR, f1, pwr1,Vpca1, features_aux = hrv(time_heart_rate,256)
+            ts,RR,HR,its,iRR,iHR, f1, pwr1,Vpca1, features_aux = hrv(time_heart_rate,1000)
         except ValueError:
             print("Not enough R peaks.")
 
@@ -77,7 +80,7 @@ class Processor:
             'track_id': reaction['track_id'], #string
             'location': reaction['location'], #string
             'datetime': new_datetime, #string
-            'heart_rate': str_heart_rate, #string
+            'heart_0rate': str_heart_rate, #string
             'ts': ts, #array
             'RR': RR, #array
             'HR': HR, #array
@@ -111,6 +114,29 @@ class Processor:
         #needs to create playlist through spotify API
         pass
     
+    def get_users(self):
+        db_users = self.conn.get_users()
+        users = []
+        for db_user in db_users:
+            user_id = db_user[0]
+            access_token = db_user[1]
+            refresh_token = db_user[2]
+            user = User(user_id, access_token, refresh_token)
+            user.reactions = self.user_reactions(user_id)
+            users.append(user)
+        return users
+
+    def user_reactions(self, id):
+        db_reactions = self.conn.get_user_reactions(id)
+        for db_reaction in db_reactions:
+            track_id = db_reaction[0]
+            track_duration = db_reaction[0]
+            reaction_id = db_reaction[0]
+            reaction_hrv = db_reaction[0]
+            reaction_date = db_reaction[0]
+            reaction_gps = db_reaction[0]
+            reaction = Reaction()
+
     def create_recommendations(self, user_id):
         reactions = self.conn.get_user_reactions(user_id)
         good = []
