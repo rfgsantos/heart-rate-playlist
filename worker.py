@@ -28,6 +28,7 @@ group.add_argument('--monthly', action="store_true", help="Create playlists mont
 parser.add_argument('-s', '--size', action="store", type=int, default=10, help="Size of the playlists to be created.", required=True)
 
 args = parser.parse_args()
+<<<<<<< HEAD
 
 def sleep_until(time):
     pass
@@ -37,6 +38,13 @@ def create_playlist(delta):
     print(time.ctime())
     ## GET ALL USERS
     ## FOR EACH USER GET REACTIONS
+    processor = core_engine.Processor()
+    users = processor.get_users()
+    for user in users:
+        reactions = user.reactions()
+        seed = reactions.positive() #analyses duration for positive classification
+        recommendations = processor.create_recommendations(seed)
+        processor.create_playlist(user, recommendations)
     ## FILTER GOOD REACTIONS
     ## RECOMMEND FROM GOOD REACTION
     ## CREATE PLAYLIST
@@ -58,3 +66,16 @@ if __name__ == "__main__":
         exit(1)
     delta = 10
     create_playlist(delta)
+=======
+print(args.accumulate(args.integers))
+
+def func():
+    processor = core_engine.Processor()
+    users = processor.get_users()
+    for user in users:
+        reactions = user.reactions()
+        seed = reactions.positive() #analyses duration for positive classification
+        recommendations = processor.create_recommendations(seed)
+        processor.create_playlist(user, recommendations)
+    del(processor)
+>>>>>>> 784bfdd42bba44a1618baa8cae416cb44ae87c3e

@@ -34,6 +34,19 @@ class Connector:
         self.cursor.execute(query.format(user_id))
         result = self.cursor.fetchall()[0]
         return result[0], result[1], result[2]
+    
+    def get_users(self):
+        query = "SELECT id, access_token, refresh_token FROM user"
+        self.cursor.execute(query)
+        result = self.cursor.fetchall()
+        return result
+
+    def get_users_with_reactions(self):
+        query = "SELECT id, access_token, refresh_token FROM user INNER JOIN reaction \
+        ON user.id = reaction.user_id WHERE NOT (reaction.hrv <=> NULL)"
+        self.cursor.execute(query)
+        result = self.cursor.fetchall()
+        return result
 
     def insert_playlist(self, playlist_id, user_id, comment=""):
         query = "INSERT INTO playlist (id, user_id, comment) VALUES(\""
@@ -72,7 +85,8 @@ class Connector:
         """
 
     def get_user_reactions(self, user_id):
-        query = "SELECT * FROM reaction where user_id=\"{}\""
+        query = "SELECT track.id, track.duration_sec, reaction.id, reaction.hrv, reaction.date, reaction.gps \
+        FROM reaction INNER JOIN track ON reaction.track_id=track.id WHERE reaction.user_id=\"{}\""
         query = query.format(user_id)
         print(query)
         """
