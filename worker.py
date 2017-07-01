@@ -43,6 +43,7 @@ def create_playlist(delta, size):
         reactions = user.reactions
         seed = user.positive_reactions() #songs that were heard for 80% of the total music time are considered positive
         print("Seed:", seed)
+        print("User \"{}\" - Reactions: ".format(user.id, len(reactions)))
         if len(reactions) > 1:
             recommendations = processor.create_recommendations(seed, size)
             print(recommendations)
@@ -50,7 +51,9 @@ def create_playlist(delta, size):
     end = time.time()
     runtime = end - start
     sleep = delta - runtime
-    threading.Timer(sleep, create_playlist, [delta]).start()
+    print("RUNTIME: ", runtime)
+    print("SLEEP: ", sleep)
+    threading.Timer(sleep, create_playlist, [delta, size]).start()
 
 if __name__ == "__main__":
     now = datetime.datetime.now()

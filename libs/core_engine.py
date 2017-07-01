@@ -53,17 +53,13 @@ class Processor:
     #TODO put in Reaction class!
     def parse_reaction(self, reaction):
         #create text from list of strings containing the RR intervals
+        str_heart_rate = ""
         if reaction['heart_rate']:
             float_heart_rate = [float(val) for val in reaction['heart_rate']]
             time_heart_rate = [0]
             for val in float_heart_rate:
                 time_heart_rate.append(time_heart_rate[len(time_heart_rate) - 1] + val)
             str_heart_rate = ",".join(["{:.4f}".format(val) for val in time_heart_rate])
-        ts = RR = HR = its = iRR = iHR = f1 = pwr1 = Vpca1 = features_aux = []
-        try:
-            ts,RR,HR,its,iRR,iHR, f1, pwr1,Vpca1, features_aux = hrv(time_heart_rate,1000)
-        except ValueError:
-            print("Not enough R peaks.")
 
         #parse reaction datetime into SQL datetime format
         date, time = reaction['datetime'].split(" ")
@@ -74,17 +70,7 @@ class Processor:
             'track_id': reaction['track_id'], #string
             'location': reaction['location'], #string
             'datetime': new_datetime, #string
-            'heart_rate': str_heart_rate, #string
-            'ts': ts, #array
-            'RR': RR, #array
-            'HR': HR, #array
-            'its': its, #array
-            'iRR': iRR, #array
-            'iHR': iHR, #array
-            'f1': f1, #array
-            'pwr1': pwr1, #array
-            'Vpca1': Vpca1, #array
-            'features_aux': features_aux #dict
+            'heart_rate': str_heart_rate #string
         }
         return new_reaction
     
