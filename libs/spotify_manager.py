@@ -43,9 +43,9 @@ class Manager():
         resp = sp.user_playlist_create(id, playlist_name)
         return resp['id']
 
-    def add_tracks(self, tracks, playlist_id, user_token):
-        token = self.get_user_id(user_token)
-        sp = spotipy.Spotify(auth=token)
+    def add_tracks_to_playlist(self, tracks, playlist_id, user_token):
+        user_id = self.get_user_id(user_token)
+        sp = spotipy.Spotify(auth=user_token)
         sp.user_playlist_add_tracks(user_id, playlist_id, tracks)
 
     def track_features(self, track_id):
@@ -63,9 +63,9 @@ class Manager():
         time_signature = features['time_signature']
         return (duration, danceability, energy, loudness, track_key, liveness, valence, tempo, time_signature)
 
-    def create_recommendations(self, tracks):
+    def create_recommendations(self, tracks, size=10):
         token = self.app_credentials()[1]
         sp = spotipy.Spotify(auth=token)
-        json = sp.recommendations(seed_tracks=tracks, limit=10)
+        json = sp.recommendations(seed_tracks=tracks, limit=size)
         recommendations = list(map(lambda track : track['id'], json['tracks']))
         return recommendations

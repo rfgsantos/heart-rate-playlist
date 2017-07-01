@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Reaction
     track_id VARCHAR(30) NOT NULL REFERENCES track(id),
     hrv LONGTEXT NOT NULL,
     date DATETIME,
-    gps DOUBLE,
+    gps VARCHAR(50),
     PRIMARY KEY(id)
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Recommendation
 (
     id INT NOT NULL AUTO_INCREMENT,
     playlist_id VARCHAR(30) NOT NULL REFERENCES playlist(id),
-    track_id VARCHAR(30) NOT NULL REFERENCES playlist(id),
+    track_id VARCHAR(30) NOT NULL REFERENCES track(id),
     PRIMARY KEY(id)
 );
 

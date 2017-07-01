@@ -28,12 +28,11 @@ group.add_argument('--monthly', action="store_true", help="Create playlists mont
 parser.add_argument('-s', '--size', action="store", type=int, default=10, help="Size of the playlists to be created.", required=True)
 
 args = parser.parse_args()
-<<<<<<< HEAD
 
 def sleep_until(time):
     pass
 
-def create_playlist(delta):
+def create_playlist(delta, size):
     start = time.time()
     print(time.ctime())
     ## GET ALL USERS
@@ -41,13 +40,13 @@ def create_playlist(delta):
     processor = core_engine.Processor()
     users = processor.get_users()
     for user in users:
-        reactions = user.reactions()
-        seed = reactions.positive() #analyses duration for positive classification
-        recommendations = processor.create_recommendations(seed)
-        processor.create_playlist(user, recommendations)
-    ## FILTER GOOD REACTIONS
-    ## RECOMMEND FROM GOOD REACTION
-    ## CREATE PLAYLIST
+        reactions = user.reactions
+        seed = user.positive_reactions() #songs that were heard for 80% of the total music time are considered positive
+        print("Seed:", seed)
+        if len(reactions) > 1:
+            recommendations = processor.create_recommendations(seed, size)
+            print(recommendations)
+            processor.create_playlist(user.id, recommendations)
     end = time.time()
     runtime = end - start
     sleep = delta - runtime
@@ -64,18 +63,5 @@ if __name__ == "__main__":
     else:
         print("Wrong periodic input.")
         exit(1)
-    delta = 10
-    create_playlist(delta)
-=======
-print(args.accumulate(args.integers))
-
-def func():
-    processor = core_engine.Processor()
-    users = processor.get_users()
-    for user in users:
-        reactions = user.reactions()
-        seed = reactions.positive() #analyses duration for positive classification
-        recommendations = processor.create_recommendations(seed)
-        processor.create_playlist(user, recommendations)
-    del(processor)
->>>>>>> 784bfdd42bba44a1618baa8cae416cb44ae87c3e
+    delta = 60
+    create_playlist(delta, args.size)

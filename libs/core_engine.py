@@ -4,6 +4,7 @@ import spotify_manager
 import db_connector
 import sys
 from user import User
+from reaction import Reaction
 sys.path.append("../")
 from util.hrv import *
 
@@ -43,9 +44,6 @@ class Processor:
     def register_reaction(self, reaction):# handle reaction
         try:
             print(reaction)
-            print(type(reaction['heart_rate']))
-            print(str(reaction['heart_rate']))
-            print(type(reaction['heart_rate'][0]))
         except:
             print("reaction process failed")
         parsed = self.parse_reaction(reaction)
@@ -56,11 +54,7 @@ class Processor:
     def parse_reaction(self, reaction):
         #create text from list of strings containing the RR intervals
         if reaction['heart_rate']:
-            float_heart_rate = []
-            hr = reaction['heart_rate'][0].split(", ")
-            float_heart_rate = [float(val) for val in hr]
-        
-            #float_heart_rate = [float(val) for val in reaction['heart_rate']]
+            float_heart_rate = [float(val) for val in reaction['heart_rate']]
             time_heart_rate = [0]
             for val in float_heart_rate:
                 time_heart_rate.append(time_heart_rate[len(time_heart_rate) - 1] + val)
@@ -80,7 +74,7 @@ class Processor:
             'track_id': reaction['track_id'], #string
             'location': reaction['location'], #string
             'datetime': new_datetime, #string
-            'heart_0rate': str_heart_rate, #string
+            'heart_rate': str_heart_rate, #string
             'ts': ts, #array
             'RR': RR, #array
             'HR': HR, #array
@@ -103,16 +97,21 @@ class Processor:
             self.conn.update_user(user_id, access_token, refresh_token, expires_at)
         return access_token
 
-    def create_playlist(self, user_id):
+    def create_playlist(self, user_id, recommendations):
         access_token = self.user_token(user_id)
         date = datetime.now().strftime("%Y-%m-%d")
+        # spotify management
         playlist_id = self.manager.create_playlist(access_token, date)
-        self.conn.insert_playlist(playlist_id, user_id, "testing")
-        #creates playlist for a user
-        #needs to connect to database and create playlist
-        #needs to connect to database and create recommendations
-        #needs to create playlist through spotify API
-        pass
+        self.manager.add_tracks_to_playlist(recommendations, playlist_id, access_token)
+        # db management
+        self.conn.create_playlist(playlist_id, user_id, "testing")
+        for recommendation in recommendations:
+            self.add_track(recommendation)
+            self.conn.insert_recommendation(playlist_id, recommendation)
+
+    def create_recommendations(self, seed, size):
+        recommendations = self.manager.create_recommendations(seed, size)
+        return recommendations
     
     def get_users(self):
         db_users = self.conn.get_users()
@@ -128,26 +127,16 @@ class Processor:
 
     def user_reactions(self, id):
         db_reactions = self.conn.get_user_reactions(id)
+        reactions = []
         for db_reaction in db_reactions:
             track_id = db_reaction[0]
-            track_duration = db_reaction[0]
-            reaction_id = db_reaction[0]
-            reaction_hrv = db_reaction[0]
-            reaction_date = db_reaction[0]
-            reaction_gps = db_reaction[0]
-            reaction = Reaction()
-
-    def create_recommendations(self, user_id):
-        reactions = self.conn.get_user_reactions(user_id)
-        good = []
-        for reaction in reactions:
-            result = self.eval_reaction(reaction)
-            if self.is_good(result):
-                good.append(result)
-        if len(good) < 5:
-            return #not enough tracks to make a decent playlist
-        recommendations = self.manager.create_recommendations(good)
-        return recommendations
+            track_duration = db_reaction[1]
+            reaction_id = db_reaction[2]
+            reaction_hrv = db_reaction[3]
+            reaction_date = db_reaction[4]
+            reaction_gps = db_reaction[5]
+            reactions.append(Reaction(track_id, track_duration, reaction_id, reaction_hrv))
+        return reactions
     
     def is_good(self, track):
         return True
