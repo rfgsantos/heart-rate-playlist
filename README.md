@@ -26,7 +26,7 @@ The database will also save all songs that all users heard and their audio featu
 
 Each user will have a reaction to a music, if they are connected to the IHR reader. By having the IHR read they will send this information to a table named reaction, or context. This table will have the HRV for the music heard by the user and some other information, such as where the user heard the music (GPS) and at what time they heard the music. This is the context that the user was subject to when they heard the music.
 
-![Database sketch](/misc/relational_database_16MAY.png "Database sketch")
+![Database sketch](/misc/relational_database_28JUN.png "Database sketch")
 
 ## Server
 # TODO
@@ -40,9 +40,6 @@ The basic diagram showing how each component will communicate is shown below.
 ![Android Diagram](/misc/AndroidDiagram.png "Android Diagram")
 
 For communicating with the server I will the Retrofit because it is very easy to implement and has a lot of features that I find useful.
-
-## Reaction classification
-# TODO
 
 ## Dependencies
 For this project I used Python 3.6 and decided to use Virtual Environments because it is good practice.
