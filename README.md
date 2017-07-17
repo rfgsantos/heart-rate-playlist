@@ -29,8 +29,19 @@ Each user will have a reaction to a music, if they are connected to the IHR read
 ![Database sketch](server/misc/relational_database_28JUN.png "Database sketch")
 
 ## Server
-# TODO
+The server was developed with Flask, a Python microframework to make a server to answer user requests. The server built has two endpoits: one GET request to receive the authorization code from a user and one POST request to register a user's reaction.
 
+Whenever either of these endpoits is used, it checks the integrity of the information and if everything is OK then information is stored in the database.
+
+The data expected from the endpoint that registers users in the application is the code sent from the Spotify API when a user wants to allow an application to access its data. This Spotify endpoint needs a redirect URL which is this server's endpoint. The code received is check by attempting to exchange the code for the user's access token and refresh token. If the access and refresh tokens are received then the user is registered and will be stored in the database.
+
+Whenever a reaction is received, the server will attempt to remove the information from the POST request. The information regarding a reaction is:
+ * User's ID;
+ * ID of the track listened;
+ * When the music was heard, date and time;
+ * Location (GPS coordinates).
+
+Periodically the server will have to create playlists for all user's registered in the application. A premise for a playlist to be created is that the user must have some amount of reactions registered. If there are no reactions registered then no analysis can be made and therefore no playlist can be created. This is called the worker.
 
 ## Android Client
 This project will require a means to communicate with the device that will provide the heart rate device through BLE (Bluetooth Low Energy). The way to do this is with a smartphone, we chose an Android device.
